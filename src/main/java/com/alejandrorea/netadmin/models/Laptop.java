@@ -1,14 +1,6 @@
 package com.alejandrorea.netadmin.models;
 
-import java.time.LocalDate;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -17,14 +9,17 @@ public class Laptop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long codigo_barra;
+    private String codigoBarra;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "orden_id", referencedColumnName = "id")
     private Orden orden;
+    private Integer posicionEnOrden;
 
+    @Enumerated(EnumType.STRING)
     private Estado estado;
-    private String descripcion_problema;
+
+    private String descripcionProblema;
     /*
 codigo_barra (UNIQUE)
 escuela_id

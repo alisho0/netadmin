@@ -26,8 +26,8 @@ public class Reparacion {
     @JoinColumn(name = "tecnico_id", referencedColumnName = "id")
     private Tecnico tecnico;
     
-    private LocalDate fecha_inicio;
-    private LocalDate fecha_fin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private String descripcion;
     /*
         id

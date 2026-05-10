@@ -1,14 +1,9 @@
 package com.alejandrorea.netadmin.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -17,13 +12,15 @@ public class Orden {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long numero_orden;
+    private Integer numeroOrden;
 
-    private LocalDate fecha_ingreso;
-    private LocalDate fecha_limite;
+    private LocalDate fechaIngreso;
+    private LocalDate fechaLimite;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "escuela_id", referencedColumnName = "id")
     private Escuela escuela;
-    
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "orden_id")
+    private List<Laptop> laptops;
 }
