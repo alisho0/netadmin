@@ -1,7 +1,10 @@
 package com.alejandrorea.netadmin.service;
 
+import com.alejandrorea.netadmin.dtos.laptop.DetalleLaptopDTO;
 import com.alejandrorea.netadmin.dtos.laptop.LaptopRequest;
 import com.alejandrorea.netadmin.dtos.orden.CrearOrdenRequest;
+import com.alejandrorea.netadmin.dtos.orden.DetalleOrdenDTO;
+import com.alejandrorea.netadmin.dtos.orden.OrdenRequestDTO;
 import com.alejandrorea.netadmin.models.Escuela;
 import com.alejandrorea.netadmin.models.Estado;
 import com.alejandrorea.netadmin.models.Laptop;
@@ -16,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -60,14 +64,42 @@ public class OrdenService {
     }
 
     @Transactional
-    public List<Orden> obtenerOrdenes() {
-        return ordenRepository.findAll();
+    public List<OrdenRequestDTO> obtenerOrdenes() {
+        List<Orden> ordenes = ordenRepository.findAll();
+        List<OrdenRequestDTO> ordenesDTO = ordenes.stream()
+                .map(o -> OrdenRequestDTO.builder()
+                        .id(o.getId())
+                        .numeroOrden(o.getNumeroOrden())
+                        .fechaIngreso(o.getFechaIngreso())
+                        .fechaLimite(o.getFechaLimite())
+                        .escuela(o.getEscuela())
+                        .cantLaptops(o.getLaptops().size())
+                        .build())
+                .collect(Collectors.toList());
+        return ordenesDTO;
     }
 
     @Transactional
-    public Orden obtenerOrden(Long id) {
-        return ordenRepository.findById(id)
+    public DetalleOrdenDTO obtenerOrden(Long id) {
+        Orden o = ordenRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
+        
+        return DetalleOrdenDTO.builder()
+                .id(o.getId())
+                .numeroOrden(o.getNumeroOrden())
+                .fechaIngreso(o.getFechaIngreso())
+                .fechaLimite(o.getFechaLimite())
+                .escuela(o.getEscuela().getNombre())
+                .laptops(o.getLaptops().stream()
+                        .map(l -> DetalleLaptopDTO.builder()
+                                .id(l.getId())
+                                .descripcionProblema(l.getDescripcionProblema())
+                                .codigoBarra(l.getCodigoBarra())
+                                .posicionEnOrden(l.getPosicionEnOrden())
+                                .estado(l.getEstado())
+                                .build())
+                        .collect(Collectors.toUnmodifiableList()))
+                .build();
     }
 
     private Integer generarNumeroOrden(Long escuelaId) {

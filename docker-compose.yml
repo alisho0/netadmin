@@ -1,17 +1,18 @@
 services:
-  postgres:
-    image: postgres:16
-    container_name: taller_db
+  mysql:
+    image: mysql:8.0
+    container_name: taller_mysql
+    restart: always
     environment:
-      POSTGRES_DB: taller
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: taller_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 123
       TZ: America/Argentina/Buenos_Aires
-      PGTZ: America/Argentina/Buenos_Aires
     ports:
-      - "5432:5432"
+      - "3307:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  postgres_data:
+  mysql_data:

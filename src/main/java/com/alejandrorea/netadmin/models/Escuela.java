@@ -15,4 +15,5 @@ public class Escuela {
     private Long id;
     private String nombre;
     private String localidad;
+    private String contacto;
 }

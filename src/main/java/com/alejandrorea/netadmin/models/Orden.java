@@ -21,6 +21,6 @@ public class Orden {
     @JoinColumn(name = "escuela_id", referencedColumnName = "id")
     private Escuela escuela;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "orden")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orden")
     private List<Laptop> laptops;
 }

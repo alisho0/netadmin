@@ -17,9 +17,13 @@ public class OrdenController {
         ordenService.crearOrden(request);
         return ResponseEntity.ok("Orden creada correctamente");
     }
-
     @GetMapping
     public ResponseEntity<?> obtenerOrdenes(){
         return ResponseEntity.ok(ordenService.obtenerOrdenes());
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerOrden(@PathVariable Long id){
+        return ResponseEntity.ok(ordenService.obtenerOrden(id));
+    }
+
 }
